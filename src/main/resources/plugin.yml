@@ -1,0 +1,6 @@
+name: Rightclickharvest
+version: '${project.version}'
+main: me.melaniesingleton.rightclickharvest.RightClickHarvest
+api-version: 1.18
+authors: [ MelanieSingleton ]
+description: Allows right click harvesting of crops
