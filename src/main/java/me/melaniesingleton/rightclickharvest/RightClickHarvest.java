@@ -28,7 +28,7 @@ public final class RightClickHarvest extends JavaPlugin implements Listener {
     public void onEnable() {
         // Plugin startup logic
         Bukkit.getPluginManager().registerEvents(this, this);
-        System.out.println("RightClickHarvest has (probably) loaded correctly!");
+        Bukkit.getLogger().info("[RightClickHarvest] RightClickHarvest has (probably) loaded correctly!");
 
     }
 
@@ -62,19 +62,19 @@ public final class RightClickHarvest extends JavaPlugin implements Listener {
                     switch (data.getMaterial()) {
                         case WHEAT -> {
                             LootHandler.WHEAT_RC.rollCounts[1] = 2 + fortuneLevel;
-                            LootHandler.WHEAT_RC.GiveLootPool(player);
+                            LootHandler.WHEAT_RC.giveLootPool(player);
                         }
                         case CARROTS -> {
                             LootHandler.CARROT_RC.rollCounts[1] = 1 + fortuneLevel;
-                            LootHandler.CARROT_RC.GiveLootPool(player);
+                            LootHandler.CARROT_RC.giveLootPool(player);
                         }
                         case POTATOES -> {
                             LootHandler.POTATO_RC.rollCounts[1] = 1 + fortuneLevel;
-                            LootHandler.POTATO_RC.GiveLootPool(player);
+                            LootHandler.POTATO_RC.giveLootPool(player);
                         }
                         case BEETROOTS -> {
                             LootHandler.BEETROOT_RC.rollCounts[1] = 2 + fortuneLevel;
-                            LootHandler.BEETROOT_RC.GiveLootPool(player);
+                            LootHandler.BEETROOT_RC.giveLootPool(player);
                         }
                     }
                 }
