@@ -51,10 +51,10 @@ public enum LootHandler {
 
 
 
-    private String name;
-    public ItemStack[] itemStacks;
-    public double[] odds;
-    public int[] rollCounts;
+    private final String name;
+    public final ItemStack[] itemStacks;
+    public final double[] odds;
+    public final int[] rollCounts;
 
     LootHandler(String name, ItemStack[] itemStacks, double[] odds, int[] rollCounts) {
         this.name = name;
@@ -85,7 +85,7 @@ public enum LootHandler {
                 double randomNumber = Math.random();
 
                 if (randomNumber <= odds[itemStackPointer]) {
-                    giveItem(player, itemStack);
+                    forcedGiveItem(player, itemStack);
                 }
                 rollCounter += 1;
             }
@@ -93,21 +93,45 @@ public enum LootHandler {
         }
     }
 
-    // Spawns loot at the given coordinates
-    public void spawnLoot(int x, int y, int z) {
+    // Spawns loot in the world at the given location as dropped items, NTS: TEST THIS LATER
+    public void spawnLoot(Location location) {
+        World world = location.getWorld();
 
+        int itemStackPointer = 0;
+
+        for (ItemStack itemStack : itemStacks) {
+
+            // Helps with debugging incorrectly set loot pools.
+            if (itemStacks.length != odds.length || itemStacks.length != rollCounts.length) {
+                Bukkit.getLogger().info("[RightClickHarvest] ERROR: length of one ore more supporting array for " + name + " does not match itemStacks length." +
+                        " Ensure each itemStack has a corresponding chance of appearing.");
+                return;
+            }
+
+            // Actual implementation goes below
+            int rollCounter = 0;
+
+            while (rollCounter < rollCounts[itemStackPointer]) {
+                double randomNumber = Math.random();
+
+                if (randomNumber <= odds[itemStackPointer]) {
+                    world.dropItemNaturally(location, itemStack);
+                }
+                rollCounter += 1;
+            }
+            itemStackPointer += 1;
+        }
     }
 
-    // PRIVATE METHODS BELOW
-
     // gives the player the provided ItemStack. If unable to, drops the item on the ground.
-    private void giveItem(Player player, ItemStack itemStack) {
-        HashMap lootAttempt = player.getInventory().addItem(itemStack);
+    // Player represents the player the item will be given to, and ItemStack is the item to be given.
+    public void forcedGiveItem(Player player, ItemStack itemStack) {
+        HashMap<Integer, ItemStack> lootAttempt = player.getInventory().addItem(itemStack);
 
         if (!lootAttempt.isEmpty()) {
             player.getInventory().addItem(itemStack);
 
-            ItemStack excessLoot = (ItemStack) lootAttempt.get(0);
+            ItemStack excessLoot = lootAttempt.get(0);
             World world = player.getWorld();
 
             world.dropItemNaturally((player.getLocation()), excessLoot);
