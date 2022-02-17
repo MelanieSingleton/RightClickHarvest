@@ -93,7 +93,7 @@ public enum LootHandler {
         }
     }
 
-    // Spawns loot in the world at the given location as dropped items, NTS: TEST THIS LATER
+    // Spawns loot in the world at the given location as dropped items.
     public void spawnLoot(Location location) {
         World world = location.getWorld();
 
